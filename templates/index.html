@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Places Scraper</title>
+</head>
+<body>
+    <h1>Google Places Scraper</h1>
+    <form action="/scrape" method="post">
+        <label for="niche">Niche:</label>
+        <input type="text" id="niche" name="niche" required>
+        <br>
+        <label for="location">Location (Lat,Lng):</label>
+        <input type="text" id="location" name="location" required>
+        <br><br>
+        <input type="submit" value="Scrape">
+    </form>
+    <div id="result"></div>
+    <script>
+        document.querySelector('form').onsubmit = async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/scrape', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            document.getElementById('result').innerHTML = `<p>${result.message}</p><a href="/download/${result.file}">Download File</a>`;
+        };
+    </script>
+</body>
+</html>
